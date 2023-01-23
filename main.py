@@ -133,6 +133,7 @@ class Profile(object):
                                         l_rec_file = [sn + '/' + file for file in d_moana[sn] if file not in d_moana_ini[sn]]
                                         l_rec_file.sort()
 
+                        time.sleep(1)
                         if len(l_rec_file) > 0:
                             print('New Moana sensor file completely transferred to the RPi')
                             logging.debug('Adding data to gps file')
