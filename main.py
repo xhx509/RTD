@@ -453,13 +453,31 @@ class Profile(object):
             return  
 
     def daily_report(self,curr_time):
-                    if '12:11:00'<str(curr_time.time())<'12:22:00' or '22:45:00'<str(curr_time.time())<'22:56:00':
+                    #if '12:11:00'<str(curr_time.time())<'12:22:00' or '06:11:00'<str(curr_time.time())<'07:56:00':
+                    if '12:11:00'<str(curr_time.time())<'12:22:00' or '22:45:00'<str(curr_time.time())<'22:56:00':          
+                        
+                        try:
+                          with open(self.path+'logs/moana.dat') as fh:
+                              for line in fh:
+                                  if line.startswith("Connecting to"):
+                                      connecting=line
+                          status_data=connecting.split('-')[-1][:-3]+','
+                        except:
+                          status_data='None'
+                        try:
+                          with open(self.path+'logs/moana.dat') as fh:
+                              for line in fh:
+                                  if line.startswith("offloaded "):
+                                      offload=line
+                          status_data=status_data+offload.split('-')[-1][:-3]
+                        except:
+                          status_data=status_data
                         data_gps = pd.read_csv(self.path + 'gps/gps_merged.csv')
                         #print (data_gps['LATITUDE'].iloc[-1])
                         lat_1=str(data_gps['LATITUDE'].iloc[-1])[:8]
                         lon_1=str(data_gps['LONGITUDE'].iloc[-1])[:8]
                         device_trans = self.list_ports('TTL232R-3V3 - TTL232R-3V3')
-                        message=str(lat_1)+','+str(lon_1)+',1111111111'
+                        message=str(lat_1)+','+str(lon_1)+',1111,'+status_data
                         #print (message)
                         #print (device_trans)
                         try:
